@@ -6,12 +6,16 @@ export const messages = {
         emailAlreadyRegistered: 'El email ya está registrado',
         userNotFound: 'Usuario no encontrado',
         iscorrectPassword: 'Contraseña incorrecta',
+        notAuthorized: 'No autorizado',
+        tokenNotValid: 'Token no válido',
+        default: 'Error inesperado',
     },
 
     success:{
         userCreated: 'Usuario creado con éxito',
         userLogged: 'Usuario logueado con éxito',
         emailSent: 'Email enviado con éxito',
+        passwordChanged: 'Contraseña cambiada con éxito',
     }
 
 }
