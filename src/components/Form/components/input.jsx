@@ -2,7 +2,7 @@
 
 import { useContext } from 'react'
 import { FormContext } from '..'
-import styles from './styles.module.scss'
+import styles from './style.module.scss'
 
 export function Input ({ label, name, placeholder, type = 'text' }) {
   const { formValues, setFormValues } = useContext(FormContext)

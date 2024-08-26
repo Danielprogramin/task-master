@@ -1,8 +1,10 @@
 'use client'
 
-import { Footer, Input, SubmitButton } from './components'
+
 import { createContext, useState } from 'react'
 import styles from './styles.module.scss'
+import { Footer, Input, SubmitButton } from './components'
+
 
 export const FormContext = createContext(undefined)
 
