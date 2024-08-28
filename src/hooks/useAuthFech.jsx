@@ -21,10 +21,12 @@ export function useAuthFetch() {
         status: 'success'
       })
 
-      if (redirectRoute) router.push(redirectRoute)
+      if (redirectRoute) {
+        router.push(redirectRoute)
+      }
     } catch (error) {
       showNotification({
-        msj: error.response.data.message,
+        msj: error.response?.data?.message || 'Error desconocido',
         open: true,
         status: 'error'
       })

@@ -12,23 +12,23 @@ export async function POST(req) {
         const body = await req.json();
         const { email, password } = body;
 
-        // Validar que los campos no estén vacíos
-        if (!email || !password) {
-            return NextResponse.json({ message: messages.error.needProps }, { status: 400 });
-        }
-        
         const userFind = await User.findOne({ email });
 
         // Validar que el usuario exista    
         if (!userFind) {
             return NextResponse.json({ message: messages.error.userNotFound }, { status: 404 });
         }
+        // Validar que los campos no estén vacíos
+        if (!email || !password) {
+            return NextResponse.json({ message: messages.error.needProps }, { status: 400 });
+        }
+        
 
         const isCorrect = await bcrypt.compare(password, userFind.password);
 
         // Validar que la contraseña sea correcta
         if (!isCorrect) {
-            return NextResponse.json({ message: messages.error.incorrectPassword }, { status: 400 });
+            return NextResponse.json({ message: messages.error.iscorrectPassword }, { status: 400 });
         }
 
         // Actualizar la última fecha de inicio de sesión
