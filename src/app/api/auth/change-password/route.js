@@ -8,11 +8,9 @@ import bcrypt from "bcryptjs";
 
 export async function POST(req) {
   try {
-    
     await connectMongoDB();
 
     const body = await req.json();
-
     const { newPassword, confirmPassword } = body;
 
     if (!newPassword || !confirmPassword) {
@@ -23,26 +21,27 @@ export async function POST(req) {
     }
 
     const headersList = headers();
-    const token = headersList.get('token');
+    const token = headersList.get("token");
 
     if (!token) {
       return NextResponse.json(
         { message: messages.error.notAuthorized },
-        { status: 400 }
+        { status: 401 } // Cambiado a 401
       );
     }
 
     try {
-      const isTokenValid = jwt.verify(token, "secreto");
+      // Verificación del token usando la misma clave secreta que en la generación
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET || "secreto");
 
-      const { data } = isTokenValid;
+      const userId = decodedToken.id; // Si firmaste el token con { id: user._id }
 
-      const userFind = await User.findById(data._id);
+      const userFind = await User.findById(userId);
 
       if (!userFind) {
         return NextResponse.json(
           { message: messages.error.userNotFound },
-          { status: 400 }
+          { status: 404 }
         );
       }
 
@@ -53,9 +52,9 @@ export async function POST(req) {
         );
       }
 
-      const hasheadPassword = await bcrypt.hash(newPassword, 10);
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      userFind.password = hasheadPassword;
+      userFind.password = hashedPassword;
 
       await userFind.save();
 
@@ -65,14 +64,14 @@ export async function POST(req) {
       );
     } catch (error) {
       return NextResponse.json(
-        { message: messages.error.tokenNotValid},
-        { status: 400 }
+        { message: messages.error.tokenNotValid },
+        { status: 401 } // Cambiado a 401
       );
     }
   } catch (error) {
     return NextResponse.json(
-      { message: messages.error.default},
-      { status: 400 }
+      { message: messages.error.default },
+      { status: 500 }
     );
   }
 }

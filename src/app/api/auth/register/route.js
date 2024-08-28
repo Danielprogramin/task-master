@@ -1,9 +1,9 @@
 import connectMongoDB from "@/lib/mongo";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 import { messages } from "@/utils/messages";
 import User from "@/models/User";
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   try {
@@ -42,7 +42,7 @@ export async function POST(req) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const newUser = new User({
       name: sanitize(name),
       email: sanitize(email),
@@ -53,7 +53,7 @@ export async function POST(req) {
 
     const { password: userPass, ...rest } = newUser._doc;
 
-    const token = jwt.sign({ id: newUser._id }, 'secreto', {
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || 'secreto', { // Cambio aquí
       expiresIn: 86400,
     });
 
@@ -74,11 +74,11 @@ export async function POST(req) {
 
     return response;
   } catch (error) {
-    console.error('Error registrando usuario:', error);
-    if (error.name === 'MongoError') {
-      return NextResponse.json({ message: 'Error de base de datos' }, { status: 500 });
+    console.error("Error registrando usuario:", error);
+    if (error.name === "MongoError") {
+      return NextResponse.json({ message: "Error de base de datos" }, { status: 500 });
     }
-    return NextResponse.json({ message: 'Error interno del servidor' }, { status: 500 });
+    return NextResponse.json({ message: "Error interno del servidor" }, { status: 500 });
   }
 }
 
@@ -93,14 +93,14 @@ function isStrongPassword(password) {
 }
 
 function sanitize(input) {
-  // Implementa tu lógica de sanitización aquí
-  return input.replace(/[&<>"']/g, function(m) {
+  // Mejorar esta función o usar una librería como dompurify
+  return input.replace(/[&<>"']/g, function (m) {
     return {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[m]
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[m];
   });
 }

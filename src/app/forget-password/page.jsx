@@ -9,11 +9,16 @@ export default function ForgetPasswordPage() {
 
   const forgetpassword = async (formData) => {
     startLoading();
-    await authFetch({
-      endpoint: "forget-password",
-      formData,
-    });
-    finishLoading();
+    try {
+      await authFetch({
+        endpoint: "forget-password",
+        formData,
+      });
+    } catch (error) {
+      console.error("Error during password recovery:", error);
+    } finally {
+      finishLoading();
+    }
   };
 
   return (

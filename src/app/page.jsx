@@ -3,18 +3,25 @@ import { useLoading } from "@/hooks/useLoading";
 import { useAuthFetch } from "@/hooks/useAuthFech";
 import { Form } from "@/components/Form";
 
+
 export default function LoginPage() {
   const { finishLoading, isLoading, startLoading } = useLoading();
   const authFetch = useAuthFetch();
 
   const login = async (formData) => {
     startLoading();
-    await authFetch({
-      endpoint: "login",
-      redirectRoute: "/home",
-      formData,
-    });
-    finishLoading();
+    try {
+      await authFetch({
+        endpoint: "login",
+        redirectRoute: "/home",
+        formData,
+      });
+    } catch (error) {
+      // Manejar errores si es necesario, por ejemplo, mostrar un mensaje adicional
+      console.error("Error during login:", error);
+    } finally {
+      finishLoading();
+    }
   };
 
   return (
@@ -33,17 +40,16 @@ export default function LoginPage() {
           <Form.Input
             placeholder="Ingresa tu contraseña..."
             label="Contraseña"
-            name="pasword"
+            name="password" // Corregido aquí
             type="password"
           />
         </div>
-        <Form.SubmitButton buttonText="Iniciar Sesión"  isLoading={isLoading}/>
+        <Form.SubmitButton buttonText="Iniciar Sesión" isLoading={isLoading} />
         <Form.Footer
           description="Te olvidaste de tu contraseña?"
           link="/forget-password"
           textLink="Recuperar contraseña"
         />
-
         <Form.Footer
           description="Aun no tienes cuenta?"
           link="/register"
