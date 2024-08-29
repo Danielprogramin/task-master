@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { messages } from "@/utils/messages";
 import User from "@/models/User";
 import jwt from "jsonwebtoken";
+import EmailTemplate from "@/components/EmailTemplate";
 
 const resend = new Resend("re_K2UUPjA7_KGGLeNYu2TQaknTDus8TnnLJ");
 
@@ -25,22 +26,17 @@ export async function POST(req) {
 
     const token = jwt.sign(
       { id: userFind._id, email: userFind.email },
-      "secreto",
+      process.env.JWT_SECRET || "secreto", // Usar una variable de entorno
       { expiresIn: '1h' }
     );
 
-    const forgetUrl = `https://localhost:3000/change-password?token=${token}`;
+    const forgetUrl = `http://localhost:3000/change-password?token=${token}`;
 
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: "andresvertel2021@gmail.com",
       subject: "Recuperar contraseña",
-      html: `
-        <h1>Recuperación de contraseña</h1>
-        <p>Haz clic en el siguiente enlace para cambiar tu contraseña:</p>
-        <a href="${forgetUrl}">Cambiar contraseña</a>
-        <p>Este enlace expirará en 1 hora.</p>
-      `
+      react: EmailTemplate({ buttonUrl: forgetUrl }),
     });
 
     return NextResponse.json({ message: messages.success.emailSent }, { status: 200 });

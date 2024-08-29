@@ -4,7 +4,7 @@ import { useAuthFetch } from "@/hooks/useAuthFech";
 import { Form } from "@/components/Form";
 
 
-export default function RegisterPage() { // Cambiado el nombre del componente
+export default function RegisterPage() { 
   const { finishLoading, isLoading, startLoading } = useLoading();
   const authFetch = useAuthFetch();
 
@@ -45,13 +45,13 @@ export default function RegisterPage() { // Cambiado el nombre del componente
           <Form.Input
             placeholder="Ingresa tu contraseña..."
             label="Contraseña"
-            name="password" // Corregido aquí
+            name="password" 
             type="password"
           />
           <Form.Input
             placeholder="Confirma tu contraseña..."
             label="Confirmar contraseña"
-            name="confirmpassword" // Corregido aquí
+            name="confirmpassword" 
             type="password"
           />
         </div>
