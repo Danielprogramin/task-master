@@ -16,24 +16,24 @@ export default async function HomePage() {
   return (
     <main className="bg-white">
       <table className="text-left border m-[1rem] text-sm font-light bg-white text-black">
-      <thead className='border-b border-gray-200 bg-white font-medium shadow-sm'>
-          <tr className='border-b text-center'>
-            <th scope='col' className='px-6 py-4'>
+      <thead className="border-b border-gray-200 bg-white font-medium shadow-sm">
+          <tr className="border-b text-center">
+            <th scope="col" className="px-6 py-4">
               Tabla de Usuarios
             </th>
           </tr>
 
           <tr>
-            <th scope='col' className='px-6 py-4'>
+            <th scope="col" className="px-6 py-4">
               #
             </th>
-            <th scope='col' className='px-6 py-4'>
+            <th scope="col" className="px-6 py-4">
               Id
             </th>
-            <th scope='col' className='px-6 py-4'>
+            <th scope="col" className="px-6 py-4">
               Email
             </th>
-            <th scope='col' className='px-6 py-4'>
+            <th scope="col" className="px-6 py-4">
               Creado
             </th>
           </tr>
